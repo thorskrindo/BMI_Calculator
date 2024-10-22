@@ -1,0 +1,93 @@
+/**
+ * Author: Thor Skrindo
+ * Assignment: Body Mass index Calculator
+ * San Francisco State University; CSC215
+ */
+
+import java.util.Scanner;
+
+import java.time.LocalDateTime;
+ import java.time.format.DateTimeFormatter;
+  public class BMI_CSC215_English_ThorSkrindo {
+    static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        displayWelcomeMessage();
+         String name = getInput("Please enter your full name: ");
+         double height = getDoubleInput("Please enter height in inches: ");
+         double weight = getDoubleInput("Please enter weight in pounds: ");
+         double bmi = calculateBMI(height, weight);
+         displayResult(name, bmi);
+         double lowWeight = getDoubleInput("Please enter a LOW weight in pounds: ");
+         double highWeight = getDoubleInput("Please enter a HIGH weight in pounds: ");
+         displayWeightRangeTable(lowWeight, highWeight);
+         displayEndingMessage(name);
+    }
+
+    public static void displayWelcomeMessage() {
+        System.out.println("My CSC 215 BMI Calculator Projects: ");
+
+        System.out.println("-".repeat(90));
+        System.out.println("-- Welcome to: ");
+        System.out.println("--          BODY MASS INDEX (BMI) Computation, CSC 215, English Version");
+        System.out.println("--                                                                  by Thor Skrindo");
+        System.out.println("-".repeat(90));
+    }
+
+    // Moved out from displayWelcomeMessage method
+    public static String getInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+
+    }
+
+    // Moved out from displayWelcomeMessage method and added a line to consume the newline character
+    public static double getDoubleInput(String prompt) {
+        System.out.print(prompt);
+        double value = scanner.nextDouble();
+        scanner.nextLine(); // Consume the newline left-over
+        return value;
+    }
+
+    public static double calculateBMI(double height, double weight) {
+
+        return (weight / (height * height)) * 703;
+    }
+
+    public static void displayResult(String name, double bmi) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMMM dd, yyyy 'at' hh:mm a");
+         LocalDateTime now = LocalDateTime.now();
+
+         System.out.println("\n-- SUMMARY REPORT FOR " + name.toUpperCase());
+         System.out.println("-- Date and Time: " + dtf.format(now));
+         System.out.printf("-- BMI: %.5f (or %.1f if rounded)\n", bmi, bmi);
+         System.out.println("-- Weight Status: " + getWeightStatus(bmi));
+         System.out.println("-".repeat(90));
+    }
+
+    public static String getWeightStatus(double bmi) { // returns
+        if (bmi < 18.5) return "Underweight";
+         else if (bmi < 25) return "Healthy Weight";
+         else if (bmi < 30) return "Overweight";
+         else return "Obesity";
+    }
+    public static void displayWeightRangeTable(double lowWeight, double highWeight) {
+
+        System.out.println("-".repeat(40));
+         System.out.println("\n|  WEIGHT |   BMI   | WEIGHT STATUS |");
+         System.out.println("-".repeat(40));
+         for (double w = lowWeight; w <= highWeight; w++) {
+            double bmi = calculateBMI(70, w); // Assuming a height of 70 inches for the table
+            System.out.printf("| %6.2f  | %7.2f   | %-14s |\n", w, bmi, getWeightStatus(bmi)); //format; three more spaces
+        }
+        System.out.println("-".repeat(50));
+    }
+    public static void displayEndingMessage(String name) {
+        System.out.println("The SFSU Mashouf Wellness Center is at 755 Font Blvd.");
+        System.out.println("\n-- Thank you for using my program, " + name + "!");
+        System.out.println("-- See ya latah alligatah!!!");
+    }
+}
+
+
+
